@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Certificate Form with Modal Preview</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+     <!-- Transparent Top Bar -->
+  <header class="topbar">
+    <div class="container">
+      <div class="logo">Barangay E-Services.</div>
+  
+      <nav class="nav-links">
+        <a href="#section1">Home</a>
+        <a href="#section2">About</a>
+        <a href="#section3">Contact Us</a>
+      </nav>
+  
+      <div class="top-bar-img">
+        <img src="assets/ph_logo.png" alt="User Icon">
+      </div>
+    </div>
+  </header>
+  <h2>Fill Out Certificate Information</h2>
+  <div class="container">
+    <form id="certForm">
+      <div class="form-group">
+        <div class="form-field">
+          <label>Certificate Type:</label>
+          <select id="certificateType" onchange="updateFormFields(); updatePreview();">
+            <option value="Residency">Certificate of Residency</option>
+            <option value="Indigency">Certificate of Indigency</option>
+            <option value="OJT">OJT Certification</option>
+            <option value="BarangayClearance">Barangay Clearance</option>
+            <option value="SoloParent">Solo Parent Certification</option>
+            <option value="GoodMoral">Certificate of Good Moral</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Name:</label>
+          <input type="text" id="name" value="MR. DANIEL MACURAY" oninput="updatePreview()">
+        </div>
+
+        <div class="form-field">
+          <label>Address:</label>
+          <input type="text" id="address" value="Barangay 41, Balacad, Laoag City, Ilocos Norte" oninput="updatePreview()">
+        </div>
+      </div>
+      <div id="dynamicFields" class="form-group"></div>
+      
+      <!-- Order Button moved below the form -->
+      <div style="text-align: center; margin-top: 20px;">
+        <button type="button" onclick="openModal()" style="padding: 12px 24px; font-size: 16px; border-radius: 6px; background-color: #28a745; color: white; border: none; cursor: pointer;">
+          Order Certificate
+        </button>
+      </div>
+    </form>
+
+    <div class="preview-container">
+      <div class="certificate" id="certPreview">
+        <div class="header">
+          Republic of the Philippines<br>
+          Metro Manila<br>
+          Municipality of Quezon City<br>
+          Barangay Centro 8<br>
+          <strong>Office of the Punong Barangay</strong>
+        </div>
+
+        <div class="title" id="certTitle">CERTIFICATION</div>
+
+        <div class="content" id="certificateContent"></div>
+
+        <div class="signature">
+          <strong></strong><br>Punong Barangay
+        </div>
+
+        <div class="seal-note">
+          <b>Not valid w/o Barangay seal…</b><br>
+          Sez’s Fee Paid Under <br>
+          Brgy. Receipt No.: ________<br>
+          Dated: ____________<br>
+          By: ________________<br>
+          Barangay Secretary
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="certificateModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div id="modalCertPreview" class="certificate"></div>
+    </div>
+  </div>
+
+  <script src="script.js">
+  </script>
+</body>
+</html>

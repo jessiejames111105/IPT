@@ -1,0 +1,326 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef2f7;
+    margin: 0;
+    padding: 20px;
+    padding-top: 80px; /* Account for fixed topbar */
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 1.4rem;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px; /* Reduced from 1600px for 15.6" screen */
+    margin: auto;
+    flex-wrap: wrap;
+  }
+  
+  form#certForm {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .form-field {
+    flex: 1 1 45%;
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  input[type="text"], select, input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+  }
+  
+  .preview-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px; /* Better fit for 15.6" screen */
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Certificate Styling optimized for 15.6" screen */
+  .certificate {
+    background: linear-gradient(#fffdf5, #fef9e7);
+    background-image: url('https://www.transparenttextures.com/patterns/linen.png');
+    background-size: cover;
+    width: 100%;
+    max-width: 550px; /* Optimized for 15.6" screen */
+    aspect-ratio: 1 / 1.3;
+    padding: 30px 35px; /* Reduced padding */
+    border: 8px double #5e493a; /* Slightly thinner border */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    font-family: 'Georgia', serif;
+    color: #3a2f2f;
+    position: relative;
+    margin: 0 auto; /* Center the certificate */
+  }
+  
+  .certificate .header {
+    text-align: center;
+    line-height: 1.3;
+    font-size: 0.85em;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2em; /* Reduced from 2.4em */
+    font-weight: 900;
+    margin: 30px 0 20px; /* Reduced margins */
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #1c1c1c;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .content {
+    font-size: 1em; /* Reduced from 1.1em */
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 40px; /* Reduced from 60px */
+  }
+  
+  .signature {
+    margin-top: 50px; /* Reduced from 80px */
+    text-align: right;
+    font-size: 0.95em;
+    font-weight: bold;
+    font-family: 'Great Vibes', cursive;
+  }
+  
+  .signature::before {
+    content: "";
+    display: block;
+    width: 180px;
+    border-top: 1px solid #000;
+    margin-bottom: 5px;
+    margin-left: auto;
+  }
+  
+  .seal-note {
+    margin-top: 30px; /* Reduced from 50px */
+    font-size: 0.8em;
+    font-style: italic;
+    color: #8a4b4b;
+    border-top: 1px dashed #999;
+    padding-top: 8px;
+    text-align: left;
+  }
+  
+  .seal-note b {
+    color: red;
+  }
+  
+  /* --- Modal Styling --- */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 3% auto; /* Reduced from 5% */
+    padding: 15px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px; /* Reduced from 900px */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  
+  .close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover {
+    color: black;
+  }
+  
+  /* Order button styling */
+  .order-button {
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 6px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .order-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Topbar styling optimized for 15.6" screen */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.8rem 1.2rem; /* Reduced padding */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .topbar .container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .logo {
+    font-size: 20px; /* Reduced from 26px */
+    font-weight: bold;
+    flex: 1;
+    color: #000;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 15px; /* Reduced from 20px */
+    font-size: 16px; /* Reduced from 20px */
+    flex: 2;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+    transition: color 0.3s ease;
+  }
+  
+  .top-bar-img {
+    flex: 0 0 auto;
+  }
+  
+  .top-bar-img img {
+    width: 32px; /* Reduced from 40px */
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  /* More specific breakpoint for 15.6" screens */
+  @media (max-width: 1366px) {
+    .container {
+      padding: 0 10px;
+    }
+    
+    .certificate {
+      max-width: 500px;
+    }
+  }
+  
+  /* Mobile view */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  
+    .certificate {
+      padding: 20px 15px;
+      aspect-ratio: auto;
+      max-width: 100%;
+    }
+  
+    .signature {
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  
+    .seal-note {
+      font-size: 11px;
+    }
+  
+    .form-group {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .form-field {
+      flex: 1 1 100%;
+    }
+  
+    form#certForm, .preview-container {
+      flex: 1 1 100%;
+    }
+    
+    .topbar .container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      gap: 8px;
+      margin: 8px 0;
+    }
+  
+    .logo {
+      margin: 0;
+    }
+  
+    .top-bar-img {
+      margin: 8px 0;
+    }
+  }
