@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay E-Services Portal</title>
+    <style>
+        :root {
+            --primary: #134e6f;
+            --secondary: #1e788f;
+            --accent: #ff9e1b;
+            --light: #f0f8ff;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 60px;
+            margin-right: 1rem;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .title-container h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
+        }
+        
+        .title-container p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .datetime {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: right;
+            border-left: 3px solid var(--accent);
+        }
+
+        
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 350px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.7);
+            transform: scale(1.05);
+            animation: subtle-zoom 30s infinite alternate;
+        }
+        
+        @keyframes subtle-zoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(19, 78, 111, 0.7), rgba(30, 120, 143, 0.8));
+            z-index: -1;
+        }
+        
+        .hero-content {
+            color: white;
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+            z-index: 1;
+        }
+        
+        .hero-content h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-intro {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        
+        .service-intro h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .service-intro h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .service-intro p {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            transform: translateY(0);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        
+        .service-icon img {
+            height: 80px;
+            transition: var(--transition);
+        }
+        
+        .service-card:hover .service-icon img {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .service-details {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .service-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .service-price {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            align-self: flex-start;
+        }
+        
+        .service-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0.8rem 0;
+        }
+        
+        .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .service-time {
+            font-size: 0.8rem;
+            color: #777;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Modal Styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-backdrop.active .modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+        
+        .service-details-container {
+            margin-bottom: 2rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+        
+        .detail-label {
+            width: 150px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .detail-value {
+            flex-grow: 1;
+        }
+        
+        .requirements-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .requirements-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+        
+        .requirements-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0c3a53;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(19, 78, 111, 0.3);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: #f0f8ff;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .contact-info {
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-icon {
+            margin-right: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #adb5bd;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 1rem 0.5rem;
+            }
+            
+            .datetime {
+                margin-top: 1rem;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .hero {
+                height: 300px;
+            }
+            
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .services-grid {
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="qc.png" alt="Barangay Logo" class="logo">
+            <div class="title-container">
+                <h1>BARANGAY E-SERVICES PORTAL</h1>
+                <p>Your Gateway to Efficient Community Services</p>
+            </div>
+        </div>
+        <div class="datetime" id="datetime">Thursday, May 08, 2025</div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="/api/placeholder/1200/400" alt="Barangay Landmark" class="hero-image">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Welcome to Digital Barangay</h2>
+            <p>Access essential government services online with ease and convenience. Our e-services platform brings the barangay office to your fingertips.</p>
+        </div>
+    </section>
+    
+    <!-- Service Introduction -->
+    <section class="service-intro">
+        <h3>Our Digital Services</h3>
+        <p>Select from our range of official documents and certificates. All requests are processed securely and efficiently by our dedicated barangay staff.</p>
+    </section>
+    
+    <!-- Services Grid -->
+    <section class="services-grid" id="services-container">
+        <!-- Service cards will be dynamically inserted here -->
+    </section>
+    
+    <!-- Modal Template -->
+    <div class="modal-backdrop" id="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Service Title</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img src="/api/placeholder/100/100" alt="Service Icon" class="modal-icon" id="modal-icon">
+                
+                <div class="service-details-container">
+                    <div class="detail-row">
+                        <div class="detail-label">Fee:</div>
+                        <div class="detail-value" id="modal-price">₱50.00</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Processing Time:</div>
+                        <div class="detail-value" id="modal-time">1-2 business days</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Description:</div>
+                        <div class="detail-value" id="modal-description">Service description goes here.</div>
+                    </div>
+                </div>
+                
+                <h4>Requirements:</h4>
+                <ul class="requirements-list" id="modal-requirements">
+                    <!-- Requirements will be dynamically inserted here -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="request-btn">Request Now</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>Barangay Hall, Main Street</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span>(02) 8123-4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">✉️</span>
+                        <span>barangay@example.gov.ph</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Officials</a></li>
+                    <li><a href="#">News & Announcements</a></li>
+                    <li><a href="#">Community Programs</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Office Hours</h4>
+                <p>Monday to Friday: 8:00 AM - 5:00 PM</p>
+                <p>Saturday: 8:00 AM - 12:00 PM</p>
+                <p>Sunday: Closed</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 Barangay E-Services Portal. All Rights Reserved.
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Service Data
+        const services = [
+            {
+                id: "barangay-clearance",
+                name: "BARANGAY CLEARANCE",
+                icon: "images/residency.ico",
+                price: "₱50.00",
+                processingTime: "1 business day",
+                description: "Official document certifying that the bearer is a person of good moral character and has no derogatory record in the barangay.",
+                requirements: [
+                    "Valid ID (Original and Photocopy)",
+                    "Proof of Residency",
+                    "Payment of ₱50.00 fee"
+                ],
+                link: "barangay_clearance.html"
+            },
+            {
+                id: "certificate-residency",
+                name: "CERTIFICATE OF RESIDENCY",
+                icon: "images/residency.ico",
+                price: "₱50.00",
+                processingTime: "1 business day",
+                description: "Official document certifying that the bearer is a bonafide resident of the barangay for a specific period of time.",
+                requirements: [
+                    "Valid ID (Original and Photocopy)",
+                    "Proof of Residency (Utility Bills)",
+                    "Payment of ₱50.00 fee"
+                ],
+                link: "certificate_of_residency.html"
+            },
+            {
+                id: "certificate-solo-parent",
+                name: "CERTIFICATE OF SOLO PARENT",
+                icon: "images/residency.ico",
+                price: "₱50.00",
+                processingTime: "2 business days",
+                description: "Official document certifying that the bearer is a solo parent, which entitles them to certain benefits under the Solo Parents' Welfare Act.",
+                requirements: [
+                    "Valid ID (Original and Photocopy)",
+                    "Birth Certificate of Child/Children",
+                    "Affidavit of Solo Parent Status",
+                    "Payment of ₱50.00 fee"
+                ],
+                link: "certificate_of_solo_parent.html"
+            },
+            {
+                id: "certificate-indigency",
+                name: "CERTIFICATE OF INDIGENCY",
+                icon: "images/residency.ico",
+                price: "₱50.00",
+                processingTime: "1 business day",
+                description: "Official document certifying that the bearer is indigent and may be eligible for certain social services and assistance programs.",
+                requirements: [
+                    "Valid ID (Original and Photocopy)",
+                    "Proof of Income or Unemployment",
+                    "Payment of ₱50.00 fee"
+                ],
+                link: "certificate_of_indigency.html"
+            },
+            {
+                id: "business-clearance",
+                name: "BUSINESS CLEARANCE",
+                icon: "images/residency.ico",
+                price: "₱100.00",
+                processingTime: "2-3 business days",
+                description: "Official document required for business permit applications, certifying that the business is compliant with barangay regulations.",
+                requirements: [
+                    "Business Registration Documents",
+                    "Valid ID of Business Owner",
+                    "Barangay Inspection Certificate",
+                    "Payment of ₱100.00 fee"
+                ],
+                link: "business_clearance.html"
+            },
+            {
+                id: "good-moral-character",
+                name: "CERTIFICATE OF GOOD MORAL CHARACTER",
+                icon: "images/residency.ico",
+                price: "₱100.00",
+                processingTime: "2 business days",
+                description: "Official document certifying that the bearer is known to be of good moral character in the community.",
+                requirements: [
+                    "Valid ID (Original and Photocopy)",
+                    "Proof of Residency",
+                    "Two 2x2 ID Pictures",
+                    "Payment of ₱100.00 fee"
+                ],
+                link: "certificate_of_good_moral_character.html"
+            },
+            {
+                id: "burial-assistance",
+                name: "CERTIFICATION OF DEATH OR BURIAL ASSISTANCE",
+                icon: "images/residency.ico",
+                price: "₱150.00",
+                processingTime: "1-2 business days",
+                description: "Official document required to avail of burial assistance programs provided by the local government.",
+                requirements: [
+                    "Death Certificate",
+                    "Valid ID of Requesting Party",
+                    "Proof of Relationship to Deceased",
+                    "Payment of ₱150.00 fee"
+                ],
+                link: "certificate_of_death_or_burial_assistance.html"
+            }
+        ];
+        
+        // Function to generate service cards
+        function generateServiceCards() {
+            const servicesContainer = document.getElementById('services-container');
+            
+            services.forEach(service => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+                serviceCard.dataset.serviceId = service.id;
+                
+                serviceCard.innerHTML = `
+                    <div class="service-icon">
+                        <img src="${service.icon}" alt="${service.name} Icon">
+                    </div>
+                    <div class="service-details">
+                        <h3 class="service-name">${service.name}</h3>
+                        <p class="service-description">${service.description}</p>
+                        <div class="service-footer">
+                            <span class="service-price">${service.price}</span>
+                            <span class="service-time">⏱️ ${service.processingTime}</span>
+                        </div>
+                    </div>
+                `;
+                
+                servicesContainer.appendChild(serviceCard);
+                
+                // Add click event to open modal
+                serviceCard.addEventListener('click', () => openModal(service));
+            });
+        }
+        
+        // Function to open modal with service details
+        function openModal(service) {
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalIcon = document.getElementById('modal-icon');
+            const modalPrice = document.getElementById('modal-price');
+            const modalTime = document.getElementById('modal-time');
+            const modalDescription = document.getElementById('modal-description');
+            const modalRequirements = document.getElementById('modal-requirements');
+            const requestBtn = document.getElementById('request-btn');
+            
+            // Set modal content
+            modalTitle.textContent = service.name;
+            modalIcon.src = service.icon;
+            modalIcon.alt = `${service.name} Icon`;
+            modalPrice.textContent = service.price;
+            modalTime.textContent = service.processingTime;
+            modalDescription.textContent = service.description;
+            
+            // Clear and generate requirements list
+            modalRequirements.innerHTML = '';
+            service.requirements.forEach(req => {
+                const li = document.createElement('li');
+                li.textContent = req;
+                modalRequirements.appendChild(li);
+            });
+            
+            // Set request button action
+            requestBtn.onclick = () => {
+                window.location.href = service.link;
+            };
+            
+            // Show modal
+            modalContainer.classList.add('active');
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            const modalContainer = document.getElementById('modal-container');
+            modalContainer.classList.remove('active');
+        }
+        
+        // Function to update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('en-US', options);
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            // Generate service cards
+            generateServiceCards();
+            
+            // Set up event listeners
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            document.getElementById('cancel-btn').addEventListener('click', closeModal);
+            
+            // Click outside modal to close
+            document.getElementById('modal-container').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('modal-container')) {
+                    closeModal();
+                }
+            });
+            
+            // Update date and time
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        });
+    </script>
+</body>
+</html>

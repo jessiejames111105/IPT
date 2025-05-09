@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Activities - Barangay E-Services Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #1e6082;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+        }
+        
+        .header-title {
+            margin: 0;
+        }
+        
+        .header-subtitle {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        
+        .timestamp {
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        .main-banner {
+            background-color: #2d7ea6;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .main-banner h1 {
+            font-size: 36px;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .content h2 {
+            color: #1e6082;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        .calendar-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .calendar {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e6082;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .calendar-nav button {
+            background-color: #1e6082;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            color: #1e6082;
+            margin-bottom: 10px;
+        }
+        
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 5px;
+        }
+        
+        .day {
+            aspect-ratio: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            background-color: white;
+        }
+        
+        .day:hover {
+            background-color: #f0f7fa;
+        }
+        
+        .day.selected {
+            background-color: #e0f0f7;
+            border-color: #1e6082;
+        }
+        
+        .day.has-event::after {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+        }
+        
+        .day.multi-day-event {
+            background-color: rgba(236, 240, 241, 0.5);
+        }
+        
+        .day.multi-day-event.selected {
+            background-color: #e0f0f7;
+        }
+        
+        .day .event-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 2px;
+        }
+        
+        .multi-day-indicator {
+            height: 3px;
+            background-color: #3498db;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .other-month {
+            color: #aaa;
+        }
+        
+        .current-day {
+            background-color: #e0f0f7;
+            font-weight: bold;
+        }
+        
+        .form-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: #1e6082;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #185270;
+        }
+        
+        .legends {
+            margin-top: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .legends h3 {
+            color: #1e6082;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .back-button {
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .back-button:hover {
+            background-color: #6c7a7d;
+        }
+        
+        .activities-list {
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        
+        .activity-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .activity-time {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <img src="/api/placeholder/60/60" alt="Barangay Logo" class="logo">
+            <div>
+                <h1 class="header-title">BARANGAY E-SERVICES PORTAL</h1>
+                <p class="header-subtitle">Your Gateway to Efficient Community Services</p>
+            </div>
+        </div>
+        <div class="timestamp">
+            Friday, May 9, 2025 at 03:30:59 PM
+        </div>
+    </div>
+    
+    <div class="main-banner">
+        <h1>MANAGE CALENDAR ACTIVITIES</h1>
+    </div>
+    
+    <div class="content">
+        <div class="calendar-container">
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button class="calendar-nav-btn" id="prev-month">&lt;</button>
+                    <div class="calendar-title" id="calendar-title">May 2025</div>
+                    <button class="calendar-nav-btn" id="next-month">&gt;</button>
+                </div>
+                <div class="weekdays">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div class="days" id="calendar-days">
+                    <!-- Calendar days will be generated by JavaScript -->
+                </div>
+                
+                <div class="activities-list" id="activities-list">
+                    <!-- Activities for selected date will be shown here -->
+                    <p id="no-activities-msg">Select a date to view activities</p>
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <h2>Add New Activity</h2>
+                <form id="activity-form">
+                    <div class="form-group">
+                        <label for="activity-title">Title:</label>
+                        <input type="text" id="activity-title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity-type">Activity Type:</label>
+                        <select id="activity-type" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="community">Community Meeting</option>
+                            <option value="health">Health Program</option>
+                            <option value="education">Educational Activity</option>
+                            <option value="sports">Sports Event</option>
+                            <option value="celebration">Celebration/Festival</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity-start-date">Start Date:</label>
+                        <input type="date" id="activity-start-date" name="start-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity-end-date">End Date:</label>
+                        <input type="date" id="activity-end-date" name="end-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity-time">Time:</label>
+                        <input type="time" id="activity-time" name="time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity-description">Description:</label>
+                        <textarea id="activity-description" name="description" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Add Activity</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="legends">
+            <h3>Activity Types</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #3498db;"></div>
+                    <span>Community Meeting</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Health Program</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #2ecc71;"></div>
+                    <span>Educational Activity</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f39c12;"></div>
+                    <span>Sports Event</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #9b59b6;"></div>
+                    <span>Celebration/Festival</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #95a5a6;"></div>
+                    <span>Other</span>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px;">Event Duration</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: rgba(236, 240, 241, 0.5);"></div>
+                    <span>Multi-day Event</span>
+                </div>
+                <div class="legend-item">
+                    <span style="font-weight: bold;">(Starts)</span>
+                    <span>First day of event</span>
+                </div>
+                <div class="legend-item">
+                    <span style="font-weight: bold;">(Continues)</span>
+                    <span>Middle day of event</span>
+                </div>
+                <div class="legend-item">
+                    <span style="font-weight: bold;">(Ends)</span>
+                    <span>Last day of event</span>
+                </div>
+            </div>
+        </div>
+        
+        <button class="back-button" onclick="location.href='admindashboard.html'">Back to Admin Dashboard</button>
+    </div>
+
+    <script>
+        // Data structure to store activities
+        let activities = {};
+        let selectedDate = null;
+        
+        // Set current date
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        
+        // Update timestamp in header
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.querySelector('.timestamp').textContent = now.toLocaleString('en-US', options);
+        }
+        
+        // Generate calendar
+        function generateCalendar(month, year) {
+            const calendarDays = document.getElementById('calendar-days');
+            calendarDays.innerHTML = '';
+            
+            const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+            document.getElementById('calendar-title').textContent = `${monthName} ${year}`;
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDay = firstDay.getDay();
+            
+            // Previous month's days
+            const prevLastDay = new Date(year, month, 0).getDate();
+            for (let i = startingDay - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.classList.add('day', 'other-month');
+                day.textContent = prevLastDay - i;
+                calendarDays.appendChild(day);
+            }
+            
+            // Current month's days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement('div');
+                day.classList.add('day');
+                day.textContent = i;
+                
+                // Check if this is today
+                if (today.getDate() === i && today.getMonth() === month && today.getFullYear() === year) {
+                    day.classList.add('current-day');
+                }
+                
+                // Check if this day has activities
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                if (activities[dateStr] && activities[dateStr].length > 0) {
+                    day.classList.add('has-event');
+                    
+                    // Add colored indicators for each activity type
+                    const types = new Set(activities[dateStr].map(a => a.type));
+                    types.forEach(type => {
+                        const indicator = document.createElement('span');
+                        indicator.classList.add('event-indicator');
+                        indicator.style.backgroundColor = getActivityColor(type);
+                        day.appendChild(indicator);
+                    });
+                }
+                
+                // Add click event
+                day.addEventListener('click', () => {
+                    // Remove selected class from all days
+                    document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                    
+                    // Add selected class to clicked day
+                    day.classList.add('selected');
+                    
+                    // Update selected date
+                    selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                    document.getElementById('activity-start-date').value = selectedDate;
+                    document.getElementById('activity-end-date').value = selectedDate;
+                    
+                    // Display activities for this date
+                    displayActivities(selectedDate);
+                });
+                
+                calendarDays.appendChild(day);
+            }
+            
+            // Next month's days
+            const totalDays = startingDay + daysInMonth;
+            const remainingDays = 42 - totalDays > 7 ? 7 : 42 - totalDays;
+            
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.classList.add('day', 'other-month');
+                day.textContent = i;
+                calendarDays.appendChild(day);
+            }
+        }
+        
+        // Display activities for selected date
+        function displayActivities(date) {
+            const activitiesList = document.getElementById('activities-list');
+            activitiesList.innerHTML = '';
+            
+            if (activities[date] && activities[date].length > 0) {
+                activities[date].forEach(activity => {
+                    const activityItem = document.createElement('div');
+                    activityItem.classList.add('activity-item');
+                    activityItem.style.backgroundColor = getActivityColor(activity.type, 0.2);
+                    activityItem.style.borderLeft = `3px solid ${getActivityColor(activity.type)}`;
+                    
+                    // Display multi-day event information
+                    let titleText = activity.title;
+                    if (activity.isMultiDay) {
+                        if (activity.isFirstDay) {
+                            titleText += ' (Starts)';
+                        } else if (activity.isLastDay) {
+                            titleText += ' (Ends)';
+                        } else {
+                            titleText += ' (Continues)';
+                        }
+                        
+                        // Add date range information
+                        const startDateFormatted = formatDateDisplay(activity.startDate);
+                        const endDateFormatted = formatDateDisplay(activity.endDate);
+                        titleText += ` - ${startDateFormatted} to ${endDateFormatted}`;
+                    }
+                    
+                    activityItem.innerHTML = `
+                        <span class="activity-time">${activity.time}</span>
+                        ${titleText}
+                    `;
+                    
+                    activityItem.title = activity.description;
+                    activitiesList.appendChild(activityItem);
+                });
+            } else {
+                const noActivities = document.createElement('p');
+                noActivities.id = 'no-activities-msg';
+                noActivities.textContent = 'No activities for this date';
+                activitiesList.appendChild(noActivities);
+            }
+        }
+        
+        // Format date for display
+        function formatDateDisplay(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+        
+        // Get color for activity type
+        function getActivityColor(type, opacity = 1) {
+            const colors = {
+                'community': `rgba(52, 152, 219, ${opacity})`,
+                'health': `rgba(231, 76, 60, ${opacity})`,
+                'education': `rgba(46, 204, 113, ${opacity})`,
+                'sports': `rgba(243, 156, 18, ${opacity})`,
+                'celebration': `rgba(155, 89, 182, ${opacity})`,
+                'other': `rgba(149, 165, 166, ${opacity})`
+            };
+            
+            return colors[type] || colors['other'];
+        }
+        
+        // Handle form submission
+        document.getElementById('activity-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('activity-title').value;
+            const type = document.getElementById('activity-type').value;
+            const startDate = document.getElementById('activity-start-date').value;
+            const endDate = document.getElementById('activity-end-date').value;
+            const time = document.getElementById('activity-time').value;
+            const description = document.getElementById('activity-description').value;
+            
+            // Validate that end date is not before start date
+            if (new Date(endDate) < new Date(startDate)) {
+                alert('End date cannot be before start date');
+                return;
+            }
+            
+            // Create an array of all dates between start and end dates (inclusive)
+            const allDates = [];
+            let currentDate = new Date(startDate);
+            const lastDate = new Date(endDate);
+            
+            // Convert dates to YYYY-MM-DD format
+            const formatDate = (date) => {
+                const d = new Date(date);
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            };
+            
+            // Add multi-day event to each day in the range
+            while (currentDate <= lastDate) {
+                const dateStr = formatDate(currentDate);
+                allDates.push(dateStr);
+                
+                if (!activities[dateStr]) {
+                    activities[dateStr] = [];
+                }
+                
+                // Add info about event duration
+                const isFirstDay = dateStr === startDate;
+                const isLastDay = dateStr === endDate;
+                const eventDuration = {
+                    startDate,
+                    endDate,
+                    isFirstDay,
+                    isLastDay,
+                    isMultiDay: startDate !== endDate
+                };
+                
+                activities[dateStr].push({
+                    title,
+                    type,
+                    time,
+                    description,
+                    ...eventDuration
+                });
+                
+                // Move to next day
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            // Sort activities for each affected date
+            allDates.forEach(date => {
+                activities[date].sort((a, b) => a.time.localeCompare(b.time));
+            });
+            
+            // Reset form
+            this.reset();
+            
+            // Update calendar to show event indicators
+            generateCalendar(currentMonth, currentYear);
+            
+            // Update activities list if any of the added dates is the selected date
+            if (selectedDate && allDates.includes(selectedDate)) {
+                displayActivities(selectedDate);
+            }
+            
+            // Update visual indicators on calendar
+            allDates.forEach(date => {
+                const [year, month, day] = date.split('-').map(Number);
+                if (month - 1 === currentMonth && year === currentYear) {
+                    const dayElements = document.querySelectorAll('.day:not(.other-month)');
+                    if (dayElements[day - 1]) {
+                        dayElements[day - 1].classList.add('has-event');
+                        
+                        // Add indicator
+                        const indicator = document.createElement('span');
+                        indicator.classList.add('event-indicator');
+                        indicator.style.backgroundColor = getActivityColor(type);
+                        dayElements[day - 1].appendChild(indicator);
+                        
+                        // Add multi-day indicator if applicable
+                        if (startDate !== endDate) {
+                            dayElements[day - 1].classList.add('multi-day-event');
+                        }
+                    }
+                }
+            });
+            
+            alert('Activity added successfully!');
+        });
+        
+        // Navigate to previous month
+        document.getElementById('prev-month').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentMonth, currentYear);
+        });
+        
+        // Navigate to next month
+        document.getElementById('next-month').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        });
+        
+        // Initialize
+        updateTimestamp();
+        setInterval(updateTimestamp, 60000);
+        generateCalendar(currentMonth, currentYear);
+        
+        // Set today's date in the form by default
+        const todayFormatted = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        document.getElementById('activity-start-date').value = todayFormatted;
+        document.getElementById('activity-end-date').value = todayFormatted;
+    </script>
+</body>
+</html>
